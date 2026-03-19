@@ -2,40 +2,26 @@
 Automate battery EOL data analysis and update NC disposition on QuickBase
 
 OVERVIEW
+
 This repository contains the End-of-Line (EOL) Inspection Automation script for battery cell manufacturing. The tool streamlines the disposition process by taking a list of scanned cell IDs, querying their test data from QuickBase, and automatically evaluating key performance metrics against specific product tolerances. Based on this analysis, the script automatically updates QuickBase records, queues cells for necessary retests (like cap-checks or OCV resets), and generates local audit logs.
 
 KEY FEATURES
-QuickBase Integration: Automatically fetches cell data and pushes disposition updates using the QuickBase REST API.
-
-Intelligent Disposition Logic: Evaluates cells based on Gravimetric Energy Density (GED), Open Circuit Voltage (OCV) drop rates, AC Internal Resistance (ACIR), and physical dimensions (thickness/weight).
-
-Part-Specific Tolerances: Dynamically adjusts Upper/Lower Specification Limits (USL/LSL) and maximum allowed test cycles based on the specific cell Part ID (e.g., CL0065, CL0075, SA102).
-
-Robust Architecture: Built with Object-Oriented Programming (OOP) principles, featuring automated API retry decorators, Context Managers for safe file handling, and Pydantic models for strict data validation.
-
-Automated Test Queueing: Automatically generates new test records in the QuickBase tracking database for cells that require further evaluation.
-
-Local Auditing: Generates timestamped CSV log files detailing exactly which cells were queued for retests or resets.
+- QuickBase Integration: Automatically fetches cell data and pushes disposition updates using the QuickBase REST API.
+- Intelligent Disposition Logic: Evaluates cells based on Gravimetric Energy Density (GED), Open Circuit Voltage (OCV) drop rates, AC Internal Resistance (ACIR), and physical dimensions (thickness/weight).
+- Part-Specific Tolerances: Dynamically adjusts Upper/Lower Specification Limits (USL/LSL) and maximum allowed test cycles based on the specific cell Part ID (e.g., CL0065, CL0075, SA102).
+- Robust Architecture: Built with Object-Oriented Programming (OOP) principles, featuring automated API retry decorators, Context Managers for safe file handling, and Pydantic models for strict data validation.
+- Automated Test Queueing: Automatically generates new test records in the QuickBase tracking database for cells that require further evaluation.
+- Local Auditing: Generates timestamped CSV log files detailing exactly which cells were queued for retests or resets.
 
 PREREQUISITES
-Python 3.8+
+- Python 3.8+
+- Required Python packages: requests pydantic
 
-Required Python packages:
-
-Bash
-pip install requests pydantic
-Usage
-Export or scan your list of End-of-Line cell IDs into a CSV file (e.g., batch_001.csv). The cell IDs should be listed in the first column.
-
-Place the CSV file in the same directory as the script.
-
-Run the application:
-
-Bash
-python Inspect.py
-When prompted, enter the name of your CSV file (without the .csv extension).
-
-The script will process each cell, output its progress to the console, update QuickBase, and generate a log file in the local directory.
+USAGE
+1. Export or scan your list of End-of-Line cell IDs into a CSV file (e.g., batch_001.csv). The cell IDs should be listed in the first column.
+2. Place the CSV file in the same directory as the script.
+3. Run the application: python Inspect.py
+ - When prompted, enter the name of your CSV file (without the .csv extension). The script will process each cell, output its progress to the console, update QuickBase, and generate a log file in the local directory.
 
 SYSTEM WORKFLOW
 1. Input: Reads cell IDs from the provided CSV file.
@@ -49,4 +35,5 @@ SYSTEM WORKFLOW
 5. Log: Writes a timestamped summary CSV (e.g., log_YYYY-MM-DD_HH-MM-SS.csv) listing the cells requiring further action.
 
 CONFIGURATION AND AUTHENICATION
+
 The script relies on a QuickBase User Token for API authentication. Ensure your user token has the appropriate read/write permissions for both the Cells and Tests databases.
